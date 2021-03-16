@@ -1,0 +1,184 @@
+<div class="row justify-content-md-center">
+    <div class="col col-lg-6">
+
+      <form 
+      [formGroup]="developerForm" 
+      (submit)="submitForm()"
+      >
+
+          <h4>Personal information</h4>
+
+          <!-- ***  NAME START ***-->
+          <div class="form-group">
+            <label for="firstName">Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              class="form-control"
+              formControlName="firstName"
+            >
+            <app-field-error-display 
+              [displayError]="isFieldValid('firstName')" 
+              errorMsg="">
+            </app-field-error-display>
+          </div>
+
+            <!-- ***  LASTNAME START ***-->
+            <div class="form-group" >
+              <label for="lastName">Lastname</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                class="form-control"
+                formControlName="lastName"
+              >
+                <app-field-error-display 
+                  [displayError]="isFieldValid('lastName')" 
+                  errorMsg="">
+                </app-field-error-display>
+            </div>
+
+            <!-- ***  BIRTHDAY START ***-->
+            <div class="form-group">
+                <label for="dateOfBirth">Birthday</label>
+                <input 
+                    type="date"
+                    name="dateOfBirth"
+                    id="dateOfBirth"
+                    class="form-control"
+                    formControlName="dateOfBirth"
+                    >
+                    <app-field-error-display 
+                        [displayError]="isFieldValid('dateOfBirth')" 
+                        errorMsg="">
+                    </app-field-error-display>
+            </div>
+
+
+            <!-- ***  FRAMEWORK START ***-->
+            <div class="form-group">
+                <label for="framework">Framework</label>
+                <select 
+                  class="form-control" 
+                  id="framework" 
+                  name="framework"
+                  formControlName="framework"
+                >
+                  <option 
+                    *ngFor="let framework of frameworkArray"
+                    [value]="framework"
+                  >
+                    {{ framework }}
+                  </option>
+                </select>
+
+                <app-field-error-display 
+                    [displayError]="isFieldValid('framework')" 
+                    errorMsg="">
+                </app-field-error-display>
+            </div>
+
+
+            <!-- ***  VERSION START ***-->
+            <div class="form-group">
+                <label for="frameworkVersion">Version</label>
+                <select 
+                  class="form-control" 
+                  id="frameworkVersion" 
+                  name="frameworkVersion"
+                  formControlName="frameworkVersion"
+                  
+                >
+                  <option 
+                    *ngFor="let version of selectedVersion"
+                    [value]="version"
+                  >
+                    {{ version }}
+                  </option>
+                </select>
+                <app-field-error-display 
+                    [displayError]="isFieldValid('frameworkVersion')" 
+                    errorMsg="">
+                </app-field-error-display>
+            </div>
+
+            <!-- ***  EMAIL START *** -->
+            <div class="form-group">
+               <label for="email">Email</label>
+               <input
+                 type="text"
+                 id="email"
+                 name="email"
+                 class="form-control"
+                 formControlName="email"
+               >
+             </div>
+
+            <ng-container *ngIf="isFieldValid('email')">
+                  
+               <app-field-error-display 
+                    [displayError]="developerForm.controls['email'].errors?.required" 
+                    errorMsg="">
+                </app-field-error-display>
+                <app-field-error-display 
+                    [displayError]="developerForm.controls['email'].errors?.email" 
+                    errorMsg="This email is not valid">
+                </app-field-error-display>
+               <app-field-error-display 
+                    [displayError]="developerForm.controls['email'].errors?.emailExists" 
+                    errorMsg="This email exist">
+                </app-field-error-display>
+
+            </ng-container>
+
+             
+             <!-- ***  HOBBY BLOCK START *** -->
+             <h3>Hobby</h3>
+             <button type="button" class="btn btn-secondary" (click)="addHobby()">Add hobbie</button>
+             <hr/>
+             <div class="row" formArrayName="hobby">
+                <div class="card col-sm-6 card-body" *ngFor="let hobbyItem of developerForm.controls['hobby'].controls; let i=index">
+                    
+                        <ng-container [formGroup]="hobbyItem">
+                            <div class="form-group ">
+                                <label for="name">Hobbi name</label>
+                                <input 
+                                type="text" 
+                                class="form-control" 
+                                id="name"
+                                name="name"
+                                formControlName="name"
+                                >
+                              </div>
+                              <div class="form-group">
+                                <label for="duration">Duration</label>
+                                <input 
+                                type="text" 
+                                class="form-control" 
+                                id="duration"
+                                name="duration"
+                                formControlName="duration"
+                                >
+                              </div>
+                        </ng-container>
+                        <button type="button" class="btn btn-danger" (click)="deleteHobby(i)">Delete</button>
+                    
+                  </div>
+             </div>
+             
+             <hr/>
+             <p *ngIf="!developerForm.valid">*all fields must be filled</p>
+             <button 
+             [disabled]="!developerForm.valid" 
+             type="submit" class="btn btn-primary">Submit</button>
+
+             
+
+      </form>
+
+
+    </div>
+</div>
+
